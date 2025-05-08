@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+const { Schema } = mongoose;
 
 const userSchema = new mongoose.Schema({
   name: { required: true, type: String },
@@ -8,6 +9,7 @@ const userSchema = new mongoose.Schema({
   profile_image: { type: String },
   created_at: { type: Date },
   updated_at: { type: Date },
+  purchasedCourses: [{ type: Schema.Types.ObjectId, ref: "Course" }],
 });
 
 userSchema.virtual("id").get(function () {
@@ -16,4 +18,4 @@ userSchema.virtual("id").get(function () {
 
 userSchema.set("toJSON", { virtuals: true });
 
-export const userModel = mongoose.model("User", userSchema);
+export const userModel = mongoose.model("User", userSchema, "User");

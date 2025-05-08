@@ -58,7 +58,10 @@ function Register() {
       return;
     }
 
-    if (inputs.email.trim().length === 0 || !inputs.email.trim().match(mailFormat)) {
+    if (
+      inputs.email.trim().length === 0 ||
+      !inputs.email.trim().match(mailFormat)
+    ) {
       setErrors({ ...errors, emailError: true });
       return;
     }
@@ -74,8 +77,12 @@ function Register() {
     }
 
     // here will be the post action to add a user to the db
-    const newUser = { name: inputs.name, email: inputs.email, password: inputs.password };
-
+    const newUser = {
+      name: inputs.name,
+      email: inputs.email,
+      password: inputs.password,
+    };
+    sessionStorage.setItem("email", newUser.email);
     const myData = {
       data: {
         type: "users",
@@ -140,7 +147,12 @@ function Register() {
           </MDTypography>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
-          <MDBox component="form" role="form" method="POST" onSubmit={submitHandler}>
+          <MDBox
+            component="form"
+            role="form"
+            method="POST"
+            onSubmit={submitHandler}
+          >
             <MDBox mb={2}>
               <MDInput
                 type="text"
@@ -159,7 +171,11 @@ function Register() {
                 }}
               />
               {errors.nameError && (
-                <MDTypography variant="caption" color="error" fontWeight="light">
+                <MDTypography
+                  variant="caption"
+                  color="error"
+                  fontWeight="light"
+                >
                   The name can not be empty
                 </MDTypography>
               )}
@@ -182,7 +198,11 @@ function Register() {
                 }}
               />
               {errors.emailError && (
-                <MDTypography variant="caption" color="error" fontWeight="light">
+                <MDTypography
+                  variant="caption"
+                  color="error"
+                  fontWeight="light"
+                >
                   The email must be valid
                 </MDTypography>
               )}
@@ -199,7 +219,11 @@ function Register() {
                 error={errors.passwordError}
               />
               {errors.passwordError && (
-                <MDTypography variant="caption" color="error" fontWeight="light">
+                <MDTypography
+                  variant="caption"
+                  color="error"
+                  fontWeight="light"
+                >
                   The password must be of at least 8 characters
                 </MDTypography>
               )}

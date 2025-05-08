@@ -1,7 +1,13 @@
 import { useState, useEffect, useMemo, useContext } from "react";
 
 // react-router components
-import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -32,7 +38,11 @@ import createCache from "@emotion/cache";
 import routes from "routes";
 
 // Material Dashboard 2 React contexts
-import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "context";
+import {
+  useMaterialUIController,
+  setMiniSidenav,
+  setOpenConfigurator,
+} from "context";
 
 // Images
 import brandWhite from "assets/images/logo-ct.png";
@@ -48,6 +58,7 @@ import { AuthContext } from "context";
 import UserProfile from "layouts/user-profile";
 import UserManagement from "layouts/user-management";
 import { Helmet } from "react-helmet";
+import CourseDetail from "layouts/course-detail";
 
 export default function App() {
   const authContext = useContext(AuthContext);
@@ -100,7 +111,8 @@ export default function App() {
   };
 
   // Change the openConfigurator state
-  const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+  const handleConfiguratorOpen = () =>
+    setOpenConfigurator(dispatch, !openConfigurator);
 
   // if the token expired or other errors it logs out and goes to the login page
   const navigate = useNavigate();
@@ -235,7 +247,11 @@ export default function App() {
               <>
                 <Sidenav
                   color={sidenavColor}
-                  brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+                  brand={
+                    (transparentSidenav && !darkMode) || whiteSidenav
+                      ? brandDark
+                      : brandWhite
+                  }
                   brandName="Material Dashboard 2"
                   routes={routes}
                   onMouseEnter={handleOnMouseEnter}
@@ -247,9 +263,17 @@ export default function App() {
             )}
             {layout === "vr" && <Configurator />}
             <Routes>
+              <Route path="/courses/:id" element={<CourseDetail />} />
               <Route path="login" element={<Navigate to="/auth/login" />} />
-              <Route path="register" element={<Navigate to="/auth/register" />} />
-              <Route path="forgot-password" element={<Navigate to="/auth/forgot-password" />} />
+              <Route
+                path="register"
+                element={<Navigate to="/auth/register" />}
+              />
+              <Route
+                path="forgot-password"
+                element={<Navigate to="/auth/forgot-password" />}
+              />
+
               {getRoutes(routes)}
               <Route path="*" element={<Navigate to="/dashboard" />} />
             </Routes>
@@ -262,7 +286,11 @@ export default function App() {
             <>
               <Sidenav
                 color={sidenavColor}
-                brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
+                brand={
+                  (transparentSidenav && !darkMode) || whiteSidenav
+                    ? brandDark
+                    : brandWhite
+                }
                 brandName="Material Dashboard 2"
                 routes={routes}
                 onMouseEnter={handleOnMouseEnter}
@@ -274,6 +302,7 @@ export default function App() {
           )}
           {layout === "vr" && <Configurator />}
           <Routes>
+            <Route path="/courses/:id" element={<CourseDetail />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/register" element={<Register />} />
             <Route path="/auth/forgot-password" element={<ForgotPassword />} />

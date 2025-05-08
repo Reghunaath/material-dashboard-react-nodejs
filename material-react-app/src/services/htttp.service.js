@@ -16,24 +16,33 @@ export class HttpService {
 
   get = async (url) => await this.request(this.getOptionsConfig("get", url));
 
-  post = async (url, data) => await this.request(this.getOptionsConfig("post", url, data));
+  post = async (url, data) =>
+    await this.request(this.getOptionsConfig("post", url, data));
 
-  put = async (url, data) => await this.request(this.getOptionsConfig("put", url, data));
+  put = async (url, data) =>
+    await this.request(this.getOptionsConfig("put", url, data));
 
-  patch = async (url, data) => await this.request(this.getOptionsConfig("patch", url, data));
+  patch = async (url, data) =>
+    await this.request(this.getOptionsConfig("patch", url, data));
 
-  delete = async (url) => await this.request(this.getOptionsConfig("delete", url));
+  delete = async (url) =>
+    await this.request(this.getOptionsConfig("delete", url));
 
   getOptionsConfig = (method, url, data) => {
     return {
       method,
       url,
       data,
-      headers: { "Content-Type": "application/vnd.api+json", "Accept": "application/vnd.api+json", 'Access-Control-Allow-Credentials': true },
+      headers: {
+        "Content-Type": "application/vnd.api+json",
+        Accept: "application/vnd.api+json",
+        "Access-Control-Allow-Credentials": true,
+      },
     };
   };
 
   request(options) {
+    console.log(API_URL);
     return new Promise((resolve, reject) => {
       this._axios
         .request(options)

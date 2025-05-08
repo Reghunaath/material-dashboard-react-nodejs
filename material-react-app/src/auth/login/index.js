@@ -63,7 +63,10 @@ function Login() {
 
     const mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-    if (inputs.email.trim().length === 0 || !inputs.email.trim().match(mailFormat)) {
+    if (
+      inputs.email.trim().length === 0 ||
+      !inputs.email.trim().match(mailFormat)
+    ) {
       setErrors({ ...errors, emailError: true });
       return;
     }
@@ -74,6 +77,7 @@ function Login() {
     }
 
     const newUser = { email: inputs.email, password: inputs.password };
+    sessionStorage.setItem("email", newUser.email);
     addUserHandler(newUser);
 
     const myData = {
@@ -124,26 +128,51 @@ function Login() {
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
             Sign in
           </MDTypography>
-          <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
+          <Grid
+            container
+            spacing={3}
+            justifyContent="center"
+            sx={{ mt: 1, mb: 2 }}
+          >
             <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
+              <MDTypography
+                component={MuiLink}
+                href="#"
+                variant="body1"
+                color="white"
+              >
                 <FacebookIcon color="inherit" />
               </MDTypography>
             </Grid>
             <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
+              <MDTypography
+                component={MuiLink}
+                href="#"
+                variant="body1"
+                color="white"
+              >
                 <GitHubIcon color="inherit" />
               </MDTypography>
             </Grid>
             <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
+              <MDTypography
+                component={MuiLink}
+                href="#"
+                variant="body1"
+                color="white"
+              >
                 <GoogleIcon color="inherit" />
               </MDTypography>
             </Grid>
           </Grid>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
-          <MDBox component="form" role="form" method="POST" onSubmit={submitHandler}>
+          <MDBox
+            component="form"
+            role="form"
+            method="POST"
+            onSubmit={submitHandler}
+          >
             <MDBox mb={2}>
               <MDInput
                 type="email"

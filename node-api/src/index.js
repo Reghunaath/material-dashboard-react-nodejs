@@ -3,12 +3,13 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import "./passport.js";
-import { dbConnect } from "./mongo";
-import { meRoutes, authRoutes } from "./routes";
+import { dbConnect } from "./mongo/index.js";
+import { meRoutes, authRoutes } from "./routes/index.js";
 import path from "path";
 import * as fs from "fs";
 import cron from "node-cron";
-import ReseedAction from "./mongo/ReseedAction";
+import ReseedAction from "./mongo/ReseedAction.js";
+import courseRoutes from "./routes/course/index.js";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 
 const whitelist = [process.env.APP_URL_CLIENT];
+console.log(whitelist);
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || whitelist.indexOf(origin) !== -1) {
@@ -39,6 +41,8 @@ app.get("/", function (req, res) {
 
 app.use("/", authRoutes);
 app.use("/me", meRoutes);
+app.use(express.json());
+app.use("/api/courses", courseRoutes);
 
 if (process.env.SCHEDULE_HOUR) {
   cron.schedule(`0 */${process.env.SCHEDULE_HOUR} * * *'`, () => {

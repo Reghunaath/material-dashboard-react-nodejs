@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 // react-router-dom components
 import { Link } from "react-router-dom";
 
@@ -19,12 +19,14 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 import bgImage from "assets/images/bg-sign-up-cover.jpeg";
 
 import AuthService from "services/auth-service";
+import { AuthContext } from "context";
 
 // for the reset I should take from the url the token sent and the email
 const PasswordReset = () => {
   const [token, setToken] = useState(null);
   const [email, setEmail] = useState(null);
   const [notification, setNotification] = useState(false);
+  const authContext = useContext(AuthContext);
 
   const [inputs, setInputs] = useState({
     password: "",
@@ -65,13 +67,14 @@ const PasswordReset = () => {
       return;
     }
 
+    const sessionEmail = sessionStorage.getItem("email");
     const formData = {
       password: inputs.password,
       password_confirmation: inputs.password_confirmation,
-      email: email,
+      email: email || sessionEmail,
       token: token,
     };
-
+    console.log(formData);
     const myData = {
       data: {
         type: "password-reset",
@@ -80,8 +83,10 @@ const PasswordReset = () => {
     };
 
     try {
+      console.log(myData);
       const response = await AuthService.resetPassword(myData);
-
+      const authResponse = await AuthService.logout();
+      authContext.logout();
       setInputs({
         password: "",
         password_confirmation: "",
@@ -94,12 +99,19 @@ const PasswordReset = () => {
         textError: "",
       });
 
-      if (errors.passwordError === false && errors.confirmationError === false) {
+      if (
+        errors.passwordError === false &&
+        errors.confirmationError === false
+      ) {
         setNotification(true);
       }
     } catch (err) {
       if (err.hasOwnProperty("errors")) {
-        setErrors({ ...errors, error: true, textError: err.errors.password[0] });
+        setErrors({
+          ...errors,
+          error: true,
+          textError: err.errors.password[0],
+        });
       }
       return null;
     }
@@ -127,7 +139,12 @@ const PasswordReset = () => {
           </MDTypography>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
-          <MDBox component="form" role="form" method="POST" onSubmit={submitHandler}>
+          <MDBox
+            component="form"
+            role="form"
+            method="POST"
+            onSubmit={submitHandler}
+          >
             <MDBox mb={2}>
               <MDInput
                 type="password"
